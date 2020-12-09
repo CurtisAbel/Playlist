@@ -22,8 +22,7 @@ public class Main {
 		album.addNewSong("practice", "3.05");
 		album.addNewSong("doing it wrong", "3.34");
 		album.addNewSong("the real her", "3.23");
-		albums.add(album); //adding album to arrayList
-
+		albums.add(album); // adding album to arrayList
 
 		album = new Album("Wunna", "Gunna");
 		album.addNewSong("Met gala", "2.34");
@@ -34,7 +33,7 @@ public class Main {
 
 		albums.add(album);
 
-		LinkedList<Song>playList = new LinkedList<Song>();
+		LinkedList<Song> playList = new LinkedList<Song>();
 
 		albums.get(1).addToPlaylist("Met gala", playList);
 		albums.get(0).addToPlaylist("shot for me", playList);
@@ -47,201 +46,180 @@ public class Main {
 		play(playList);
 
 	}
+
 	private static void play(LinkedList<Song> playList) {
 		Scanner scanner = new Scanner(System.in);
 		boolean quit = false;
 		boolean playlistOnLoop = false;
 
-
-
 		printMenu();
-		boolean goingForward=true;
+		boolean goingForward = true;
 		ListIterator<Song> i = playList.listIterator();
 
 		Song head = i.next();
-		if(playList.isEmpty()) {
+		if (playList.isEmpty()) {
 			System.out.println("No songs in playlist");
 			return;
 
-		}else {
-
+		} else {
 
 		}
 
-		while(!quit) {
-
+		while (!quit) {
 
 			int action = scanner.nextInt();
 			scanner.nextLine();
 
-			switch(action) {
+			switch (action) {
 
-				case 0:
-					System.out.println("Exiting Playlist");
-					quit=true;
-					break;
+			case 0:
+				System.out.println("Exiting Playlist");
+				quit = true;
+				break;
 
-				case 1: //go to next node
-					if(!goingForward) {
-						if(i.hasNext()) {
-							i.next();
+			case 1: // go to next node
+				if (!goingForward) {
+					if (i.hasNext()) {
+						i.next();
 
-
-						}
-						goingForward=true;//if there is a next node, then we can go forward
 					}
+					goingForward = true;// if there is a next node, then we can go forward
+				}
 
-					if(i.hasNext()) {
+				if (i.hasNext()) {
+					System.out.println("currently playing: " + i.next().toString());
+
+				} else if (playlistOnLoop == true && !i.hasNext()) {
+
+					i = playList.listIterator(); // goes back to the start of linkedList
+					// System.out.println("now playing: " + head);
+					goingForward = true;
+
+					if (i.hasNext()) {
 						System.out.println("currently playing: " + i.next().toString());
 
+					}
+
+				} else {
+
+					System.out.println("End of playlist");
+					goingForward = false; // reaching end of linkedList
+				}
+
+				break;
+
+			case 2: // go to previous node
+				if (goingForward) {
+					if (i.hasPrevious()) {
+
+						i.previous();
 
 					}
-					else if(playlistOnLoop == true && !i.hasNext()) {
+					goingForward = false; // if we go back to the previous node, we are no going forward anymore, making
+											// it false
+				}
+				if (i.hasPrevious()) {
 
-						i=playList.listIterator(); //goes back to the start of linkedList
-						//System.out.println("now playing: " + head);
-						goingForward=true;
+					System.out.println("Currently playing: " + i.previous().toString());
 
+				} else if (playlistOnLoop == true && !i.hasPrevious()) {
 
-						if(i.hasNext()) {
-							System.out.println("currently playing: " + i.next().toString());
+					i = playList.listIterator(playList.size()); // goes back to the start of linkedList
+					// System.out.println("now playing: " + head);
+					goingForward = false;
 
-
-						}
+					if (i.hasPrevious()) {
+						System.out.println("currently playing: " + i.previous().toString());
 
 					}
-					else {
+
+				}
+
+				else {
+					System.out.println("Start of playlist");
+					goingForward = true;
+				}
+				break;
+
+			case 3:
+				if (goingForward) { // stay at or replay current node
+					if (i.hasPrevious()) {
+
+						System.out.println("now replaying: " + i.previous().toString());
+						goingForward = false;
+
+					} else {
+						System.out.println("we are are the start of the playlist");
+					}
+
+				} else {
+					if (i.hasNext()) {
+						System.out.println("now replaying: " + i.next().toString());
+
+						goingForward = true;
+
+					} else {
 
 						System.out.println("End of playlist");
-						goingForward= false; //reaching end of linkedList
-					}
-
-					break;
-
-				case 2: //go to previous node
-					if(goingForward) {
-						if(i.hasPrevious()) {
-
-							i.previous();
-
-						}
-						goingForward=false; //if we go back to the previous node, we are no going forward anymore, making it false
-					}
-					if(i.hasPrevious()) {
-
-						System.out.println("Currently playing: " + i.previous().toString());
-
-					}
-					else if(playlistOnLoop == true && !i.hasPrevious()) {
-
-						i=playList.listIterator(playList.size()); //goes back to the start of linkedList
-						//System.out.println("now playing: " + head);
-						goingForward=false;
-
-
-						if(i.hasPrevious()) {
-							System.out.println("currently playing: " + i.previous().toString());
-
-
-						}
 
 					}
 
+				}
+				break;
 
-					else {
-						System.out.println("Start of playlist");
-						goingForward=true;
+			case 4: // print linkedList
+				printList(playList);
+				break;
+
+			case 5: // removing song from linkedList
+				if (playList.size() > 0) {
+
+					i.remove();
+					if (i.hasNext()) {
+						System.out.println("now playing: " + i.next());
+					} else if (i.hasPrevious()) {
+						System.out.println("now playing: " + i.next());
 					}
-					break;
 
-				case 3:
-					if(goingForward) { //stay at or replay current node
-						if(i.hasPrevious()) {
+				}
+				break;
 
-							System.out.println("now replaying: " + i.previous().toString());
-							goingForward=false;
+			case 6:
+				printMenu();
+				break;
 
-						}else {
-							System.out.println("we are are the start of the playlist");
-						}
+			case 7:
+				playlistOnLoop = true;
+				System.out.println("Loop mode on...");
+				break;
 
-					}else {
-						if(i.hasNext()) {
-							System.out.println("now replaying: " + i.next().toString());
+			case 8:
+				playlistOnLoop = false;
+				System.out.println("Loop mode off...");
+				break;
 
-							goingForward=true;
+			case 9:
+				Collections.shuffle(playList);
+				System.out.println("Shuffle mode is on...");
+				break;
 
-						}
-						else {
-
-							System.out.println("End of playlist");
-
-						}
-
-
-					}
-					break;
-
-				case 4: //print linkedList
-					printList(playList);
-					break;
-
-				case 5: //removing song from linkedList
-					if(playList.size()>0) {
-
-						i.remove();
-						if(i.hasNext()) {
-							System.out.println("now playing: "+ i.next());
-						}else if(i.hasPrevious()) {
-							System.out.println("now playing: " + i.next());
-						}
-
-					}
-					break;
-
-				case 6:
-					printMenu();
-					break;
-
-				case 7:
-					playlistOnLoop=true;
-					System.out.println("Loop mode on...");
-					break;
-
-				case 8:
-					playlistOnLoop=false;
-					System.out.println("Loop mode off...");
-					break;
-					
-				case 9:
-					Collections.shuffle(playList);
-					System.out.println("Shuffle mode is on...");
-					break;
-					
-				case 10: 
-					Collections.sort(playList);
-					System.out.println("Shuffle mode off...");
-					break;
-
+			case 10:
+				Collections.sort(playList);
+				System.out.println("Shuffle mode off...");
+				break;
 
 			}
 
-
 		}
 	}
+
 	public static void printMenu() { // \n means new line
-		System.out.println("Available options:\n"+
-				"press option 0 - quit playlist\n" + "press option 1 - play next song\n"+
-				"press option 2 - play previous song\n"+
-				"press option 3 - to replay song current song\n" +
-				"press option 4 - to display pLaylist\n"+
-				"press option 5 - remove song from playlist\n"+
-				"press option 6 - show options again\n" + "press option 7 to put playlist on loop\n" +
-				"press option 8 to take loop mode off\n" + "press option 9 to put playlist on shuffle\n" + 
-				"Press option 10 to take shuffle mode off \n");
-
-
-
+		System.out.println("Available options:\n" + "press option 0 - quit playlist\n"
+				+ "press option 1 - play next song\n" + "press option 2 - play previous song\n"
+				+ "press option 3 - to replay song current song\n" + "press option 4 - to display pLaylist\n"
+				+ "press option 5 - remove song from playlist\n" + "press option 6 - show options again\n"
+				+ "press option 7 to put playlist on loop\n" + "press option 8 to take loop mode off\n"
+				+ "press option 9 to put playlist on shuffle\n" + "Press option 10 to take shuffle mode off");
 
 	}
 
@@ -250,14 +228,12 @@ public class Main {
 		Iterator<Song> iterator = playList.iterator();
 		System.out.println("+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
 		System.out.println("Current songs in playlist");
-		while(iterator.hasNext()) {
+		while (iterator.hasNext()) {
 
 			System.out.println(iterator.next().toString());
 
 		}
 		System.out.println("+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
 	}
-	
-	
 
 }
