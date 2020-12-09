@@ -1,4 +1,7 @@
+package com.project.playlist;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -208,6 +211,17 @@ public class Main {
 				case 8:
 					playlistOnLoop=false;
 					System.out.println("Loop mode off...");
+					break;
+					
+				case 9:
+					Collections.shuffle(playList);
+					System.out.println("Shuffle mode is on...");
+					break;
+					
+				case 10: 
+					Collections.sort(playList);
+					System.out.println("Shuffle mode off...");
+					break;
 
 
 			}
@@ -223,7 +237,8 @@ public class Main {
 				"press option 4 - to display pLaylist\n"+
 				"press option 5 - remove song from playlist\n"+
 				"press option 6 - show options again\n" + "press option 7 to put playlist on loop\n" +
-				"press option 8 to take loop mode off");
+				"press option 8 to take loop mode off\n" + "press option 9 to put playlist on shuffle\n" + 
+				"Press option 10 to take shuffle mode off \n");
 
 
 
